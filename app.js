@@ -4,6 +4,7 @@ const exphbs = require('express-handlebars')
 
 const routes = require('./routes')
 // 引入路由器時，路徑設定為 /routes 就會自動去尋找目錄下叫做 index 的檔案。
+require('./config/mongoose')
 
 const app = express()
 
