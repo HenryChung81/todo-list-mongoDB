@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Todo = require('../todo')
+
 mongoose.connect('mongodb://localhost/todo-list3', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
