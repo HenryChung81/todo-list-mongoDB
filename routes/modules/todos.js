@@ -48,10 +48,11 @@ router.get('/:id/edit', (req, res) => {
 
 router.post('/:id/edit', (req, res) => {
   const id = req.params.id
-  const name = req.body.name
+  const { name, isDone } = req.body
   return Todo.findById(id)
     .then((todo) => {
       todo.name = name
+      todo.isDone = isDone === 'on'
       return todo.save()
     })
     .then(() => res.redirect(`/todos/${id}`))
@@ -63,6 +64,15 @@ router.post('/:id/edit', (req, res) => {
 
 // 在「新增資料」時兩種作法都可以，而這次因為搭配的資料操作是 Todo.findById，這個方法只會返回一筆資料，所以後面需要接 todo.save() 針對這一筆資料進行儲存，而非操作整份資料。
 
+// isDone === 'on'
+// checkbox 的回傳值是由 HTML 規定的，在之前的「密碼產生器」專案裡，我們有講解過 checkbox 的使用方法，再提醒一下這裡和直覺想像的 true/false 不太一樣，：
+
+// 如果 checkbox 有被打勾，它會被設定為 on。
+// 如果 checkbox 沒有被「打勾」，則它不會帶任何值。
+
+// 這裡看過去很直覺，裡面有一個關於運算子優先序的小知識，就像在數學的四則運算裡有先乘除後加減，JavaScript 裡邏輯運算子也會比普通的 = 優先執行。
+
+// 刪除特定 To-do
 router.post('/:id/delete', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
