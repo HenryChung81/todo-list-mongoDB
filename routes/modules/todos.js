@@ -46,7 +46,7 @@ router.get('/:id/edit', (req, res) => {
     .catch((error) => console.error(error))
 })
 
-router.post('/:id/edit', (req, res) => {
+router.put('/:id', (req, res) => {
   const id = req.params.id
   const { name, isDone } = req.body
   return Todo.findById(id)
@@ -73,7 +73,7 @@ router.post('/:id/edit', (req, res) => {
 // 這裡看過去很直覺，裡面有一個關於運算子優先序的小知識，就像在數學的四則運算裡有先乘除後加減，JavaScript 裡邏輯運算子也會比普通的 = 優先執行。
 
 // 刪除特定 To-do
-router.post('/:id/delete', (req, res) => {
+router.delete('/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
     .then((todo) => todo.remove())
