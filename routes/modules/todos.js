@@ -35,4 +35,29 @@ router.get('/:id', (req, res) => {
 // .then()
 // 到 .then() 這段拿到資料了，資料會被存在 todo 變數裡，傳給樣板引擎，請 Handlebars 幫忙組裝 detail 頁面。
 
+router.get('/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .lean()
+    .then((todo) => res.render('edit', { todo }))
+    .catch((error) => console.error(error))
+})
+
+router.post('/:id/edit', (req, res) => {
+  const id = req.params.id
+  const name = req.body.name
+  return Todo.findById(id)
+    .then((todo) => {
+      todo.name = name
+      return todo.save()
+    })
+    .then(() => res.redirect(`/todos/${id}`))
+    .catch((error) => console.error(error))
+})
+
+// Todo.create() v.s. todo.save()
+// 之前在「新增資料」時，我們比較過 Todo.create() 和 todo.save()，前者是操作整份資料，後者是針對單一資料。
+
+// 在「新增資料」時兩種作法都可以，而這次因為搭配的資料操作是 Todo.findById，這個方法只會返回一筆資料，所以後面需要接 todo.save() 針對這一筆資料進行儲存，而非操作整份資料。
+
 module.exports = router
