@@ -1,3 +1,12 @@
 <p>{{todo.name}}</p>
 <a href="/todos/{{todo._id}}/edit">edit</a>
 <a href="/">back</a>
+    <form action="/todos/{{todo._id}}" method="post" style="display:inline">
+      <button type="submit">delete</button>
+    </form>
+
+
+{{!-- 這裡有兩個改動：
+
+根據前後文，把 this._id 換成 todo._id：
+路徑用 / 開頭，表示「從根目錄開始」，原本的 ./ 代表「從同一層資料夾開始」，這裡我們把之前的 ./ 也刪掉。 --}}
