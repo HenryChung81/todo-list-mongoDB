@@ -9,6 +9,12 @@ router.get('/login', (req, res) => {
 
 router.post('/login', (req, res) => {})
 
+// 第一次登入的時候，伺服器會建立一個 session，並且把 session id 交給客戶端，而客戶端要把這個 session id 保存到瀏覽器的 cookie 裡。
+
+// 之後當同一個瀏覽器發送請求時，只要附上同一組 session id，伺服器就會判斷「這個 request 來自一個登入過的使用者」，因此這個瀏覽器就可以使用授權的服務內容。
+
+// 同理，所謂的登出，就是把這個 session id 消滅掉，結束這一回合的會話 (session)。下次再進入網站時，又需要重新登入、建立新的 session。
+
 router.get('/register', (req, res) => {
   res.render('register')
 })
