@@ -1,4 +1,6 @@
 const express = require('express')
+const passport = require('passport')
+// 加入 middleware，驗證 request 登入狀態
 const router = express.Router()
 
 const User = require('../../models/user')
@@ -7,7 +9,13 @@ router.get('/login', (req, res) => {
   res.render('login')
 })
 
-router.post('/login', (req, res) => {})
+router.post(
+  '/login',
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/users/login',
+  })
+)
 
 // 第一次登入的時候，伺服器會建立一個 session，並且把 session id 交給客戶端，而客戶端要把這個 session id 保存到瀏覽器的 cookie 裡。
 

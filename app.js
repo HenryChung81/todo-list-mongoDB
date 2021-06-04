@@ -6,6 +6,8 @@ const methodOverride = require('method-override')
 
 const routes = require('./routes')
 // 引入路由器時，路徑設定為 /routes 就會自動去尋找目錄下叫做 index 的檔案。
+
+const usePassport = require('./config/passport')
 require('./config/mongoose')
 
 const app = express()
@@ -32,6 +34,10 @@ app.use(
 // saveUninitialized：強制將未初始化的 session 存回 session store。未初始化表示這個 session 是新的而且沒有被修改過，例如未登入的使用者的 session。
 // 這兩個選項其實沒有設置也能正常運行，如果你把它註解起來的話，只是會在 server 上跳出一些提示訊息，建議你把它設定起來。
 
+// 在認證機制裡，「簽章」用來防止資訊經過篡改，這組簽章把前面的 session id 和只有伺服器知道的的密鑰 (secret) 組合起來，經過演算法加密，形成一組無法逆向解開的亂數。
+
+// 收到客戶端傳來的資訊時，伺服器會檢查簽章是否有效，如果簽章失效，就不會讓 request 存取網站內容。
+
 app.use(bodyParser.urlencoded({ extended: true }))
 // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 
@@ -40,9 +46,7 @@ app.use(methodOverride('_method'))
 
 // 設定時我們傳入了一個參數 _method，這個是 method-override 幫我們設計的路由覆蓋機制，只要我們在網址上使用 query string (也就是 ?) 帶入這組指定字串，就可以把路由覆蓋掉
 
-// 在認證機制裡，「簽章」用來防止資訊經過篡改，這組簽章把前面的 session id 和只有伺服器知道的的密鑰 (secret) 組合起來，經過演算法加密，形成一組無法逆向解開的亂數。
-
-// 收到客戶端傳來的資訊時，伺服器會檢查簽章是否有效，如果簽章失效，就不會讓 request 存取網站內容。
+usePassport(app)
 
 app.use(routes)
 
