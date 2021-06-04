@@ -23,6 +23,13 @@ router.post(
 
 // 同理，所謂的登出，就是把這個 session id 消滅掉，結束這一回合的會話 (session)。下次再進入網站時，又需要重新登入、建立新的 session。
 
+router.get('/logout', (req, res) => {
+  req.logout()
+  res.redirect('/users/login')
+})
+
+// req.logout() 是 Passport.js 提供的函式，會幫你清除 session。登出之後，我們就把使用者帶回登入頁面。
+
 router.get('/register', (req, res) => {
   res.render('register')
 })
