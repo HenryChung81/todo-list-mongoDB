@@ -48,6 +48,25 @@ app.use(methodOverride('_method'))
 
 usePassport(app)
 
+app.use((req, res, next) => {
+  console.log(req.user)
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
+
+// 使用 app.use 代表這組 middleware 會作用於所有的路由，裡面我們設定了兩個本地變數：
+
+// res.locals.isAuthenticated：把 req.isAuthenticated() 回傳的布林值，交接給 res 使用
+// res.locals.user：把使用者資料交接給 res 使用
+
+// req.user 是在反序列化的時候，取出的 user 資訊，之後會放在 req.user 裡以供後續使用
+
+// res.locals：所有樣板都可以使用的變數
+// res.locals 是 Express.js 幫我們開的一條捷徑，放在 res.locals 裡的資料，所有的 view 都可以存取。
+
+// 之前做 CRUD 時，我們會按 MVC 的分工，每個功能都撈一次資料，然後再把資料傳給 view。但因為「登入的使用者」實在太常用到，直接放進 res.locals 是比較好的選擇。
+
 app.use(routes)
 
 app.listen(PORT, () => {
