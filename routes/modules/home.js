@@ -3,7 +3,8 @@ const router = express.Router()
 const Todo = require('../../models/todo') // 載入 Todo model
 
 router.get('/', (req, res) => {
-  Todo.find() // 取出 Todo model 裡的所有資料，現在沒有傳入任何參數，所以會撈出整份資料。
+  const userId = req.user._id // 變數設定
+  Todo.find({ userId }) // 加入查詢條件
     .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
     .sort({ _id: 'asc' })
     // sort() 是 Mongoose 提供的排序方法，裡面的參數 { _id: 'asc' } 代表「根據 _id 用升冪 (ascending) 排序」，反之，如果要降冪 (desscending) 排序，可以寫 'desc'。
