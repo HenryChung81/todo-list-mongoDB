@@ -5,6 +5,10 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const flash = require('connect-flash')
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const routes = require('./routes')
 // 引入路由器時，路徑設定為 /routes 就會自動去尋找目錄下叫做 index 的檔案。
 
@@ -12,7 +16,7 @@ const usePassport = require('./config/passport')
 require('./config/mongoose')
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT
 
 // 在本地預設使用 3000 port，但上傳之後，會由 Heroku 自動分配，Heroku 會把 port 的埠號放在環境參數 process.env.PORT 裡。
 
@@ -22,7 +26,7 @@ app.set('view engine', 'hbs')
 
 app.use(
   session({
-    secret: 'ThisIsMySecret',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   })
