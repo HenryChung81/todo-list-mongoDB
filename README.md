@@ -47,7 +47,7 @@ git clone https://github.com/HenryChung81/todo-list-mongoDB.git
 2. 開啟終端機(Terminal)，進入存放此專案的資料夾
 
 ```
-cd
+cd todo-list-mongoDB
 ```
 
 3. 安裝 npm 套件
