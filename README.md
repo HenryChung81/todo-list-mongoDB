@@ -90,7 +90,7 @@ Express is running on http://localhost:3000
 8. 可使用種子資料的帳號密碼登入
 
 ```
-信箱：root@email.com
+信箱：root@example.com
 密碼：12345678
 ```
 
